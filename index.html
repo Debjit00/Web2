@@ -1,0 +1,29 @@
+<style type="text/css">
+    .center{margin: 130px auto;
+	width: 40%;
+	height: 40%;
+	padding: 40%;
+	background-color: black;}
+	label{color: white;}
+</style>
+
+</head>
+<body>
+<center><h2 class="mt-4">Adding two numbers using javascript Code</h2></center>
+<div class="container center">
+    <label>Number 1:</label>
+    <input type="number" name="number1" id="num1" class="form-control">
+    <label>Number 2:</label>
+    <input type="number" name="number2" id="num2" class="form-control">
+    <p id="add" style="color: white" class="mt-2"></p>
+    <button class="btn btn-danger mt-3 pl-4 pr-4 ml-auto d-block" onclick="Add()">Add</button>
+</div>
+
+<script type="text/javascript">
+    function Add() {
+        var n1 = parseInt(document.getElementById('num1').value);
+        var n2 = parseInt(document.getElementById('num2').value);
+        var sum = n1 + n2;
+        document.getElementById('add').innerHTML = " Sum = " + sum;
+    }
+</script>
