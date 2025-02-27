@@ -103,8 +103,11 @@
             // socket = new WebSocket('ws://localhost:3000');
             // let socket = new WebSocket(`ws://${window.location.hostname}:3000`);
 
-            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            socket = new WebSocket(`${protocol}//${window.location.hostname}:${window.location.port}`);
+            // const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            // socket = new WebSocket(`${protocol}//${window.location.hostname}:${window.location.port}`);
+
+            const serverUrl = 'wss://62ee-49-39-58-61.ngrok-free.app';
+            socket = new WebSocket(serverUrl);
             
             socket.addEventListener('open', () => {
                 console.log('Connected to server');
