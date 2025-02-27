@@ -1,0 +1,103 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #D59B6B;
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    color: #fff;
+    flex-direction: column;
+}
+.home-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 4px #000;
+}
+.home-link:hover {
+    color: #ffcc00;
+    text-shadow: 4px 4px 8px #000;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* Heading */
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Form container */
+.container {
+    background-color: #f4a261; /* Light accent color */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+/* Input groups */
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #264653;
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.input-group input {
+    padding: 15px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    flex: 1;
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #2a9d8f; /* Teal */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+button:hover {
+    opacity: 0.9;
+}
+/* Link to go back */
+.back-link {
+    text-decoration: none;
+    color: #264653;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: inline-block;
+    background-color: #f4a261;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.back-link:hover {
+    background-color: #e76f51;
+}
