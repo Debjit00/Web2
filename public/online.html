@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PvP Online</title>
+    <!-- <link rel="stylesheet" href="css/online.css"> -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #D59B6B;
+            font-family: 'Press Start 2P', cursive;
+            margin: 0;
+            flex-direction: column;
+            color: #fff;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 200px;
+            text-shadow: 2px 2px 4px #000;
+        }
+        .home-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
+        }
+        .home-link:hover {
+            color: #ffcc00;
+            text-shadow: 4px 4px 8px #000;
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+        #status{
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+        #animation_status {
+            position: absolute;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            top: 43%;
+            left: 33%;
+        }
+        .setup-box, .container {
+            padding: 20px;
+            background-color: #6C584C;
+            border-radius: 10px;
+            display: none;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            gap: 60px;
+            padding: 30px;
+            background-color: #6C584C;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            width: 80%;
+        }
+        .player-box {
+            padding: 20px;
+            background-color: #8B5E34;
+            border-radius: 10px;
+            width: 45%;
+        }
+        .header, .input-group {
+            display: grid;
+            grid-template-columns: 1fr 4fr 2fr 2fr;
+            gap: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            font-size: 1rem;
+            left: auto;
+            text-align: center;
+            background-color: #D59B6B;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            width: 80%;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            background-color: #A3B18A;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            padding-left: 35px;
+            background: #6C584C;
+            color: #fff;
+            font-size: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #000;
+        }
+        .close-btn {
+            position: fixed;
+            top: -18px;
+            right: -1px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        #result-btn {
+            display: none;
+            position: absolute;
+            top: 8px;
+            right: 28px;
+            background: #6C584C;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #000;
+        }
+        @keyframes dot-blink {
+            0% { content: 'Searching for opponent'; }
+            25% { content: 'Searching for opponent.'; }
+            50% { content: 'Searching for opponent..'; }
+            75% { content: 'Searching for opponent...'; }
+            100% { content: 'Searching for opponent'; }
+        }
+        #animation_status::after {
+            content: 'Searching for opponent';
+            animation: dot-blink 3s steps(1, end) infinite;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-link">Unravel.io</a>
+    <h1>PvP Online</h1>
+
+    <button id="result-btn" onclick="swap()">Result</button>
+
+    <div id="popup">
+        <button class="close-btn" onclick="closePopup()">&times;</button>
+        <p id="popup-message"></p>
+    </div>
+    <div id="animation_status"></div>
+    <div id="status"></div>
+
+    <div class="setup-box" id="number-setup">
+        <h2>Enter your 4-digit number</h2>
+        <input type="text" id="player-number" placeholder="4-digit number" style="width: 234px; font-size: 1.5rem;">
+        <button onclick="submitNumber()">Submit</button>
+        <p id="waiting-message" style="display: none; font-size: 1.2rem; margin-top: 20px;">You chose <span id="chosen-number"></span>. Waiting for your opponent to pick a number...</p>
+    </div>
+
+    <div class="container" id="game-container">
+        <div class="player-box">
+            <h2 id="player1-name">Anonynomous</h2>
+            <div class="header">
+                <span>Count</span>
+                <span style="padding-left: 49px;">Numbers</span>
+                <span>Fames</span>
+                <span>Dots</span>
+            </div>
+            <div id="player1-inputs"></div>
+            <input type="text" id="player1-guess" placeholder="Enter guess">
+            <button onclick="submitGuess(1)">Guess</button>
+        </div>
+
+        <div class="player-box">
+            <h2 id="player2-name">Opponent</h2>
+            <div class="header">
+                <span>Count</span>
+                <span style="padding-left: 49px;">Numbers</span>
+                <span>Fames</span>
+                <span>Dots</span>
+            </div>
+            <div id="player2-inputs"></div>
+            <input type="text" id="player2-guess" placeholder="Enter guess">
+            <button onclick="submitGuess(2)">Guess</button>
+        </div>
+    </div>
+    <script>
+        let socket = new WebSocket('ws://localhost:3000');
+        // let socket = new WebSocket(`wss://2251-49-39-37-60.ngrok-free.app`); // For ngrok
+        let playerNumber = '';
+        let isPlayerTurn = false;
+        let player1Name = localStorage.getItem('username') || 'Anonynomous';
+        let player2Name = 'Anonynomous';
+
+        document.getElementById('game-container').style.display = 'none';
+
+        socket.addEventListener('open', () => {
+            console.log('Connected to server');
+            socket.send(JSON.stringify({ page: 'online', type: 'join', username: player1Name }));
+        });
+
+        socket.addEventListener('message', (event) => {
+            const data = JSON.parse(event.data);
+
+            if (data.type === 'start') {
+                document.getElementById('status').textContent = 'Game started!';
+                document.getElementById('number-setup').style.display = 'block';
+                document.getElementById('animation_status').style.display = 'none';
+            }
+
+            if (data.type === 'waiting') {
+                document.getElementById('waiting-message').style.display = 'block';
+                document.getElementById('chosen-number').textContent = playerNumber;
+            }
+
+            if (data.type === 'start-game') {
+                document.getElementById('number-setup').style.display = 'none';
+                document.getElementById('game-container').style.display = 'flex';
+                isPlayerTurn = data.turn;
+                player2Name = data.opponentName || 'Anonynomous';
+                document.getElementById('player1-name').textContent = player1Name;
+                document.getElementById('player2-name').textContent = player2Name;
+                document.getElementById('status').textContent = data.turn ? "Your turn!" : "Opponent's turn..." ;
+            }
+
+            if (data.type === 'guess') {
+                addGuess(1, data.guess, data.fames, data.dots);
+                isPlayerTurn = false;
+            }
+
+            if (data.type === 'opponent-guess') {
+                addGuess(2, data.guess, data.fames, data.dots);
+                isPlayerTurn = true;
+            }
+
+            if(data.type === 'status') {
+                if(data.message === "win") {
+                    document.getElementById('popup-message').innerText = `Congratulations! You guessed the correct number and win!`;
+                    document.getElementById('popup').style.display = 'block';
+                    document.getElementById('result-btn').style.display = 'block';
+                }
+                else if(data.message === "loss") {
+                    document.getElementById('popup-message').innerText = `Your opponent guessed your number. You lost!`;
+                    document.getElementById('popup').style.display = 'block';
+                    document.getElementById('result-btn').style.display = 'block';
+                }
+                else document.getElementById('status').textContent = data.message;
+            }
+        });
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+        function swap() {
+            current = document.getElementById('popup').style.display;
+            document.getElementById('popup').style.display = current === 'block' ? 'none' : 'block';
+        }
+
+        function submitNumber() {
+            playerNumber = document.getElementById('player-number').value;
+            if (!/^[0-9]{4}$/.test(playerNumber) || new Set(playerNumber).size !== 4) {
+                alert('Enter a valid 4-digit number with no repeating digits!');
+                return;
+            }
+            socket.send(JSON.stringify({ page: 'online', type: 'number', number: playerNumber }));
+            document.getElementById('waiting-message').style.display = 'block';
+            document.getElementById('chosen-number').textContent = playerNumber;
+        }
+        function submitGuess(player) {
+            if (!isPlayerTurn) {
+                alert('Wait for your turn!');
+                return;
+            }
+            const guess = document.getElementById(`player${player}-guess`).value;
+            if (!/^[0-9]{4}$/.test(guess) || new Set(guess).size !== 4) {
+                alert('Enter a valid 4-digit guess!');
+                return;
+            }
+            socket.send(JSON.stringify({ page: 'online', type: 'guess', player: player, guess: guess }));
+            document.getElementById(`player${player}-guess`).value = '';
+        }
+        function addGuess(player, guess, fames, dots) {
+            const container = document.getElementById(`player${player}-inputs`);
+            const count = container.children.length + 1;
+            container.innerHTML += `
+                <div class='input-group'>
+                    <span  style="padding-left: 30px;">#${count}</span>
+                    <span style="padding-left: 102px;">${guess}</span>
+                    <span style="padding-left: 58px;">${fames}</span>
+                    <span style="padding-left: 35px;">${dots}</span>
+                </div>`;
+        }
+    </script>
+    <!-- <script src="js/online.js"></script> -->
+</body>
+</html>

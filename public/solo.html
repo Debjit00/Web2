@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo Unravel</title>
+    <link rel="stylesheet" href="css/solo.css">
+</head>
+<body>
+    <a href="index.html" class="home-link">Unravel.io</a>
+    
+    <div class="profile">
+        <div class="profile-icon"></div>
+        <span id="username">anonymous</span>
+    </div>
+    
+    <h1>Solo Unravel</h1>
+
+    <button id="result-btn" onclick="swap()">Result</button>
+
+    <div id="popup">
+        <button class="close-btn" onclick="closePopup()">&times;</button>
+        <p id="popup-message"></p>
+    </div>
+
+    <div id="confirmation-popup">
+        <p>Are you sure you want to resign?</p>
+        <div id="confirmation-buttons">
+            <button id="yes-btn" class="confirm-btn">Yes</button>
+            <button id="no-btn" class="confirm-btn">No</button>
+        </div>
+    </div>
+
+    <div id="status">Try to guess the 4-digit number!</div>
+
+    <div class="container" id="game-container">
+        <button id="resign-btn">Resign</button>
+        <div class="player-box">
+            <h2 id="player-name">Player</h2>
+            <div class="header">
+                <span>Count</span>
+                <span style="padding-left: 49px;">Numbers</span>
+                <span>Fames</span>
+                <span>Dots</span>
+            </div>
+            <div id="player-inputs"></div>
+            <div id="secret-number"></div>
+            <input type="text" id="player-guess" placeholder="Enter guess">
+            <div style="display: flex; justify-content: center; gap: 10px;">
+                <button onclick="submitGuess()">Guess</button>
+            </div>
+            <button id="play-again" onclick="resetGame()">Play Again</button>
+        </div>
+    </div>
+    <script src="js/solo.js"></script>
+</body>
+</html>

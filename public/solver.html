@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unravel Solver</title>
+    <link rel="stylesheet" href="css/solver.css">
+</head>
+<body>
+    <a href="index.html" class="home-link">Unravel.io</a>
+    <h1>Player 2</h1>
+    <div class="main-container">
+        <div class="container">
+            <div class="header">
+                <span>Count</span>
+                <span>Numbers</span>
+                <span>Fames</span>
+                <span>Dots</span>
+            </div>
+            <div id="inputs">
+                <div class="input-group">
+                    <label for="guess1">#1</label>
+                    <input type="number" id="guess1" class="guess" min="1000" max="9999">
+                    <input type="number" id="fames1" class="fames" min="0" max="4">
+                    <input type="number" id="dots1" class="dots" min="0" max="4">
+                </div>
+            </div>
+            <button onclick="solve()">Guess</button>
+            <p id="result"></p>
+        </div>
+        <div class="buttons-container">
+            <button onclick="addInput()">Add</button>
+            <button class="btn-remove" onclick="removeInput()">Remove</button>
+        </div>
+        <script src="js/solver.js"></script>
+    </div>
+</body>
+</html>

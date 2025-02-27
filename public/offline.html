@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PvP Offline</title>
+    <link rel="stylesheet" href="css/offline.css">
+</head>
+<body>
+    <a href="index.html" class="home-link">Unravel.io</a>
+    <h1 margin-top: 20px>Pvp Offline</h1>
+    <div id="winner-popup"></div>
+    <div id="setup-container">
+        <div class="setup-box" id="player1-setup">
+            <h2>Player 1: Enter your number</h2>
+            <input type="text" id="player1-number" placeholder="4-digit number" onkeypress="if(event.key === 'Enter') submitPlayer1()">
+            <button onclick="submitPlayer1()">Enter</button>
+        </div>
+        <div class="setup-box" id="player2-setup" style="display: none;">
+            <h2>Player 2: Enter your number</h2>
+            <input type="text" id="player2-number" placeholder="4-digit number" onkeypress="if(event.key === 'Enter') startGame()">
+            <button onclick="startGame()">Start Game</button>
+        </div>
+    </div>
+
+    <div class="container" id="game-container" style="display: none;">
+        <div class="player-box">
+            <h2>Player 1</h2>
+            <div class="header">
+                <span>Count</span>
+                <span>Numbers</span>
+                <span>Fames</span>
+                <span>Dots</span>
+            </div>
+            <div id="player1-inputs"></div>
+            <input type="text" id="player1-guess" placeholder="Enter guess" onkeypress="if(event.key === 'Enter') makeGuess(1)">
+            <button onclick="makeGuess(1)">Guess</button>
+        </div>
+
+        <div class="player-box">
+            <h2>Player 2</h2>
+            <div class="header">
+                <span>Count</span>
+                <span>Numbers</span>
+                <span>Fames</span>
+                <span>Dots</span>
+            </div>
+            <div id="player2-inputs"></div>
+            <input type="text" id="player2-guess" placeholder="Enter guess" onkeypress="if(event.key === 'Enter') makeGuess(2)">
+            <button onclick="makeGuess(2)">Guess</button>
+        </div>
+    </div>
+    <script>
+        let player1Number = '';
+        let player2Number = '';
+        let currentPlayer = 1;
+        let gameEnded = false;
+
+        function submitPlayer1() {
+            player1Number = document.getElementById('player1-number').value;
+            if (!isValidNumber(player1Number)) {
+                alert('Player 1 must enter a valid 4-digit number with no repeating digits!');
+                return;
+            }
+            document.getElementById('player1-setup').style.display = 'none';
+            document.getElementById('player2-setup').style.display = 'block';
+        }
+
+        function startGame() {
+            player2Number = document.getElementById('player2-number').value;
+            if (!isValidNumber(player2Number)) {
+                alert('Player 2 must enter a valid 4-digit number with no repeating digits!');
+                return;
+            }
+            document.getElementById('setup-container').style.display = 'none';
+            document.getElementById('game-container').style.display = 'flex';
+        }
+
+        function isValidNumber(number) {
+            return /^[0-9]{4}$/.test(number) && new Set(number).size === 4;
+        }
+
+        function makeGuess(player) {
+            if (gameEnded) {
+                alert('The game is over! No more guesses allowed.');
+                return;
+            }
+            if (player !== currentPlayer) {
+                alert(`It's not Player ${player}'s turn!`);
+                return;
+            }
+
+            let guess = document.getElementById(`player${player}-guess`).value;
+            document.getElementById(`player${player}-guess`).value = '';
+            if (!isValidNumber(guess)) {
+                alert('Invalid guess! Please enter a 4-digit number with no repeating digits.');
+                return;
+            }
+
+            let targetNumber = player === 1 ? player2Number : player1Number;
+            let { fames, dots } = calculateFamesAndDots(guess, targetNumber);
+
+            addGuess(player, guess, fames, dots);
+
+            if (fames === 4) {
+                declareWinner(player);
+                gameEnded = true;
+            } else {
+                currentPlayer = player === 1 ? 2 : 1;
+            }
+        }
+
+        function calculateFamesAndDots(guess, target) {
+            let fames = 0;
+            let dots = 0;
+            let guessArray = guess.split('');
+            let targetArray = target.split('');
+            
+            guessArray.forEach((digit, index) => {
+                if (digit === targetArray[index]) {
+                    fames++;
+                    guessArray[index] = targetArray[index] = null;
+                }
+            });
+
+            guessArray.forEach((digit) => {
+                if (digit && targetArray.includes(digit)) {
+                    dots++;
+                    targetArray[targetArray.indexOf(digit)] = null;
+                }
+            });
+
+            return { fames, dots };
+        }
+
+        function addGuess(player, guess, fames, dots) {
+            let container = document.getElementById(`player${player}-inputs`);
+            let count = container.children.length + 1;
+            container.innerHTML += `
+            <div class='input-group'><span>#${count}</span>
+            <input type='text' value='${guess}' disabled>
+            <span>${fames}</span><span>${dots}</span>
+            </div>`;
+        }
+
+        function declareWinner(player) {
+            let container = document.getElementById(`player${player}-inputs`);
+            let count = container.children.length;
+            document.getElementById('winner-popup').innerText = `Player ${player} won!\nTotal guesses = ${count}`;
+            document.getElementById('winner-popup').style.display = 'block';
+        }
+    </script>
+    <script src="js/offline.js"></script>
+</body>
+</html>
