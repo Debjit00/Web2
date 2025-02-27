@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
@@ -15,10 +14,18 @@ app.use(express.urlencoded({ extended: true }));
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'password',
+    password: 'whotfru?',
     database: 'unravel',
     port: 3306
 });
+
+// app.use(cors({ origin: 'https://unravelgame.netlify.app' }));
+const server = app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
+
+const cors = require('cors');
+app.use(cors());
 
 db.connect(err => {
     if (err) {
@@ -58,10 +65,6 @@ app.post('/login', (req, res) => {
         }
     });
 });
-const server = app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-    // console.log(`Server running at https://2251-49-39-37-60.ngrok-free.app`);
-});
 module.exports = {server};
 
 const { pvpOn, pvpOff } = require('./myModule');
@@ -72,8 +75,9 @@ wss.on('connection', (ws) => {
     console.log('A player connected.');
     ws.on('message', (message) => {
         const data = JSON.parse(message);
-        if(data.page === 'online')
+        if(data.page === 'online') {
             pvpOn(data, ws);
+        }
     });
 
     ws.on('close', () => {
