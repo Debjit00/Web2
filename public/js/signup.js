@@ -14,7 +14,7 @@ document.getElementById('signupForm').addEventListener('submit', async function(
 
     // alert("Email: " + formData.email + "\nUsername: " + formData.username + "\nPassword: " + formData.password);
     try {
-        const response = await fetch('http://localhost:3000/signup', {
+        const response = await fetch(`http://${myNgrok()}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
