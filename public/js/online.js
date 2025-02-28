@@ -24,8 +24,6 @@ function connectToServer() {
     
     socket.addEventListener('open', () => {
         console.log('Connected to server');
-    const serverUrl = 'wss://ce8a-49-39-53-171.ngrok-free.app';
-    socket = new WebSocket(serverUrl);
         document.getElementById('reconnect-warning').style.display = 'none';
         clearTimeout(reconnectTimeout);
         
