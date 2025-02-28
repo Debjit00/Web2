@@ -19,7 +19,7 @@ document.getElementById('game-container').style.display = 'none';
 // Function to connect to the WebSocket server
 function connectToServer() {
     // socket = new WebSocket('ws://localhost:3000');
-    const serverUrl = 'wss://ce8a-49-39-53-171.ngrok-free.app';
+    const serverUrl = `wss:${myNgrok()}`;
     socket = new WebSocket(serverUrl);
     
     socket.addEventListener('open', () => {
